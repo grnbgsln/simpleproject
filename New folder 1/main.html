@@ -1,0 +1,51 @@
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+)
+
+type data struct {
+	Merek string
+	Data  interface{}
+}
+type dataMobil struct {
+	Merk_mobil  string `json:merk_mobil`
+	Jenis_mobil string `json:jenis_mobil`
+	Transmisi   string `json:transmisi`
+	Price       string `json:price`
+}
+
+var cars = []dataMobil{
+	{"Ford", "Fiesta", "Manual", "165000000"},
+	{"Ford", "Fiesta", "Manual", "175000000"},
+	{"Ford", "Fiesta", "Automatic", "180000000"},
+	{"Ford", "Fiesta", "Manual", "155000000"},
+	{"VW", "Polo", "Manual", "170000000"},
+	{"VW", "Beetle", "Manual", "265000000"},
+	{"VW", "Polo", "Automatic", "165000000"},
+}
+
+func main() {
+	mySlice := []*dataMobil{}
+
+	var res data
+
+	myString := "VW"
+	for _, s := range cars {
+		if myString == s.Merk_mobil {
+			user := &dataMobil{s.Merk_mobil, s.Jenis_mobil, s.Transmisi, s.Price}
+			mySlice = append(mySlice, user)
+		}
+	}
+	fmt.Println(len(mySlice))
+	res = data{
+		Merek: myString,
+		Data:  mySlice,
+	}
+	jsonData, err := json.Marshal(res)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	fmt.Println(string(jsonData))
+}
